@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=>, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.2.0/p5.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" 
+    rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" 
+    crossorigin="anonymous">
+    <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+    <div class="form__group">
+    <!-- <link rel="stylesheet" href="index.css"/>  -->
+    <style>
+
+        #theRange{
+            width: 100%;
+        }
+        /* #canvas{
+            display:flex   
+        } */
+        header{
+            background-image: url('SPYbg.jpeg');
+            background-size: contain;
+            padding: 5rem;
+            border: solid black;
+            align-content: flex-end;
+            position: relative;
+        }
+        h1{
+            background-color:rgba(66,137,132,0.6);
+            font: white;
+            position: absolute;
+            bottom: 5px;
+            left: 10px;
+            display: inline;
+        }
+        body{
+            background-color: rgb(172,184,167);
+            font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif
+        }
+        .form__label {
+        font-family: 'Roboto', sans-serif;
+        font-size: 1rem;
+        margin-left: 2rem;
+        margin-top: 0.7rem;
+        display: block;
+        transition: all 0.3s;
+        transform: translateY(-0.75rem) translateX(-2rem);
+        /* transform: translateX(-2rem); */
+        }
+
+        .form__input {
+        font-family: 'Roboto', sans-serif;
+        color: #333;
+        font-size: 1rem;
+        margin: 0 auto;
+        padding: -0.5rem 0.5rem;
+        border-radius: 0.2rem;
+        background-color: rgb(255, 255, 255);
+        border: none;
+        width: 80%;
+        height: 20%;
+        /* display: block; */
+        border-bottom: 0.3rem solid transparent;
+        transition: all 0.3s;
+        }
+
+        .form__input:placeholder-shown + .form__label {
+        opacity: 0;
+        visibility: hidden;
+        -webkit-transform: translateY(-4rem);
+        transform: translateY(-4rem);
+        }
+        .anyaBG{
+            border: solid black;
+            background-image: url('anyaWall.webp');
+            background-size: cover;
+            background-position: center;
+        }
+        .yorBG{
+            border: solid black;
+            background-image: url('yorBG.jpg');
+            background-size: cover;
+        }
+        .loidBG{
+            border: solid black;
+            background-image: url('loidBG.jpg');
+            background-size: cover;
+        }
+        .buttomBox{
+            display:flex;
+            background-color: rgb(143,169,156);
+            border: solid black;
+            position: relative;
+        }
+        #block{
+            position: absolute;
+            bottom: 5px;
+            right: 10px;
+        }
+        #forTheme{
+            background-color: rgba(254,218,142,0.8);
+            border-radius: 20px;
+        }
+        img{
+            width: 80px;
+            height: 80px;
+            border-radius: 100%;
+        }
+        #box1{
+            padding: 1rem;
+            border: solid;
+            border-radius: 30px;
+        }
+        #box2{
+            position: absolute;
+            top:-1rem;
+            right:1rem;
+        }
+        #reset-game {
+        background-color: #e1ecf4;
+        border-radius: 3px;
+        border: 1px solid #7aa7c7;
+        box-shadow: rgba(255, 255, 255, .7) 0 1px 0 0 inset;
+        box-sizing: border-box;
+        color: #39739d;
+        cursor: pointer;
+        display: inline-block;
+        font-family: -apple-system,system-ui,"Segoe UI","Liberation Sans",sans-serif;
+        font-size: 2rem;
+        font-weight: 400;
+        line-height: 1.15385;
+        margin: 0;
+        outline: none;
+        padding: 8px .8em;
+        position: relative;
+        text-align: center;
+        text-decoration: none;
+        user-select: none;
+        -webkit-user-select: none;
+        touch-action: manipulation;
+        vertical-align: baseline;
+        white-space: nowrap;
+        }
+
+        #reset-game:hover{
+        background-color: #b3d3ea;
+        color: #2c5777;
+        }
+
+        /* #reset-game:focus {
+        box-shadow: 0 0 0 4px rgba(0, 149, 255, .15);
+        }  */
+
+        #reset-game:active {
+        background-color: #a0c7e4;
+        box-shadow: none;
+        color: #2c5777;
+        }
+        #inputBar{
+            align-self: flex-end;
+        }
+        #box3{
+            padding: 1rem;
+            border: solid;
+            border-radius: 30px;
+        }
+    </style>
+</head>
+    <header>
+        <h1>FORGER Family's Game of life</h1>
+        <div id="block">
+            <div id="forTheme" class="d-flex">
+            <div onclick="anyaFunction()" class="m-3"><img src="anyaIcon.webp" alt="..."></div>
+            <div onclick="yorFunction()" class="m-3"><img src="yorIcon.webp" alt="..."></div>
+            <div onclick="loidFunction()" class="m-3"><img src="loidIcon.webp" alt="..."></div>
+            </div>
+            </div>
+        </div>
+    </header>
+
+<body>
+
+    <!-- <script src="index.js"></script> -->
+    
+    <div id="canvas" class="anyaBG"></div>
+    <div class="buttomBox m-3">
+
+        <div id="box1" class="d-flex m-3">
+            <div>
+                <input type="text" class="form__input die" id="name" placeholder="Die Value" required="" value="2"/>
+                <label for="name" class="form__label">DIE Value</label>
+                <input type="text" class="form__input over" id="name" placeholder="Population Value" required="" value="3"/>
+                <label for="name" class="form__label">Overpopulation Value</label>
+                <input type="text" class="form__input born" id="name" placeholder="New Life Value" required="" value="3"/>
+                <label for="name" class="form__label">New Life Value</label>
+            </div>
+            <div id="inputBar"><button onclick="enterFunction()">Apply Rules</button></div>
+        </div>   
+           
+        <div id="box2">
+            <button id= "reset-game" role="button" class="reset" onclick="resetLife()">RESTART</button>
+            <button onclick="pauseFunction()" id= "reset-game" role="button">PAUSE</button>
+        </div>
+        <div>
+            <div id="box3" class="m-3">
+                <div><label for="theRange">FPS</label></div>
+                <div><label for="theRange"><span class="inputIDX">30</span></label></div>
+                <div><input type="range" min="1" max="80" value="30" id="theRange"></div>
+            </div>
+        </div>
+    </div>
+    
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" 
+integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" 
+crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.2.0/p5.js"></script>
+<script>
+
+const unitLength  = 20;
+let strokeColor = "pink";
+
+let range = document.querySelector("#theRange")
+let canvas = document.querySelector("#canvas")
+let rangeIDX = document.querySelector('.inputIDX')
+let dieInput = document.querySelector('.die')
+let overInput = document.querySelector('.over')
+let bornInput = document.querySelector('.born')
+
+let dieValue;
+let overValue;
+let bornValue;
+
+function enterFunction(){
+    init();
+    dieValue = dieInput.value
+    overValue = overInput.value
+    bornValue = bornInput.value
+}
+
+// let frameRateValue = +range.value
+let columns; /* To be determined by window width */
+let rows;    /* To be determined by window height */
+let currentBoard;
+let nextBoard;
+let themeColor = 255;
+let currentPic = 0;
+let currentStatus = true;
+let audio = new Audio('waku.mp3')
+
+range.oninput = function(){
+    rangeIDX.innerHTML = this.value;
+}
+
+
+let img;
+function preload() {
+  peanut = loadImage('3307494.png');
+  yellowDagger = loadImage('dagger.png')
+  pistol = loadImage('pistol2.png');
+  spy = loadImage('spy.png')
+  anyaIcon = loadImage('anyaIcon.webp')
+  yorIcon = loadImage('yorIcon.webp')
+  loidIcon = loadImage('loidIcon.webp')
+}
+
+
+function anyaFunction(){
+    init();
+    canvas.classList.add("anyaBG")
+    canvas.classList.remove("yorBG")
+    canvas.classList.remove("loidBG")
+    currentPic = 0;
+    themeColor = "255"
+    strokeColor = "pink"
+    audio.play();
+
+}
+function yorFunction(){
+    init();
+    canvas.classList.add("yorBG")
+    canvas.classList.remove("anyaBG")
+    canvas.classList.remove("loidBG")
+    currentPic = 1;
+    themeColor = "rgba(169,81,81, 0.8)"
+    strokeColor = "rgb(149,52,62)"
+}
+function loidFunction(){
+    init();
+    canvas.classList.add("loidBG")
+    canvas.classList.remove("anyaBG")
+    canvas.classList.remove("yorBG")
+    currentPic = 2;
+    themeColor = "rgb(71,90,80)"
+    strokeColor = "rgb(243,227,190)"
+}
+
+function setup(){
+	/* Set the canvas to be under the element #canvas*/
+	const canvas = createCanvas(windowWidth, windowHeight -350);
+	canvas.parent(document.querySelector('#canvas'));
+
+	/*Calculate the number of columns and rows */
+	columns = floor(width  / unitLength);
+	rows    = floor(height / unitLength);
+	
+	/*Making both currentBoard and nextBoard 2-dimensional matrix that has (columns * rows) boxes. */
+	currentBoard = [];
+	nextBoard = [];
+	for (let i = 0; i < columns; i++) {
+		currentBoard[i] = [];
+		nextBoard[i] = []
+    }
+	// Now both currentBoard and nextBoard are array of array of undefined values.
+	init();  // Set the initial values of the currentBoard and nextBoard
+    enterFunction();
+}
+
+
+function generate() {
+    //Loop over every single box on the board
+    for (let x = 0; x < columns; x++) {
+        for (let y = 0; y < rows; y++) {
+            // Count all living members in the Moore neighborhood(8 boxes surrounding)
+            let neighbors = 0;
+            for (let i of [-1, 0, 1]) {
+                for (let j of [-1, 0, 1]) {
+                    if( i == 0 && j == 0 ){
+	                    // the cell itself is not its own neighbor
+	                    continue;
+	                }
+                    // The modulo operator is crucial for wrapping on the edge
+                    let peerX =(x + i + columns) % columns
+                    let peerY =(y + j + rows) % rows
+                    neighbors += currentBoard[peerX][peerY];
+                }
+            }
+
+            // Rules of Life
+            if (currentBoard[x][y] == 1 && neighbors < dieValue ) {
+                // Die of Loneliness
+                nextBoard[x][y] = 0;
+            } else if (currentBoard[x][y] == 1 && neighbors > overValue) {
+                // Die of Overpopulation
+                nextBoard[x][y] = 0;
+            } else if (currentBoard[x][y] == 0 && neighbors == bornValue) {
+                // New life due to Reproduction
+                nextBoard[x][y] = 1;
+            } else {
+                // Stasis
+                nextBoard[x][y] = currentBoard[x][y];
+            }
+        }
+    }
+
+    // Swap the nextBoard to be the current Board
+    [currentBoard, nextBoard] = [nextBoard, currentBoard];
+}
+
+function init() {
+	for (let i = 0; i < columns; i++) {
+		for (let j = 0; j < rows; j++) {
+			currentBoard[i][j] = 0;
+			nextBoard[i][j] = 0;
+		}
+	}
+    let randomX = Math.floor(Math.random() * unitLength)
+    let randomY = Math.floor(Math.random() * unitLength)
+    let randomZ = Math.floor(Math.random() * 3)
+
+}
+
+function draw() {
+    clear();
+    background("rgba(0,0,0,0)");
+    generate();
+    frameRate(+range.value);
+    for (let i = 0; i < columns; i++) {
+        for (let j = 0; j < rows; j++) {
+            if (currentBoard[i][j] == 1 && nextBoard[i][j] == 1){
+                image(spy,i*unitLength,j*unitLength,unitLength,unitLength)  
+            }   else if (currentBoard[i][j] == 1 && currentPic == 0){
+                fill("red");
+                image(peanut,i*unitLength,j*unitLength,unitLength,unitLength)
+            }   else if ((currentBoard[i][j] == 1 && currentPic == 1)){
+                fill("rgba(0,0,0,0)");
+                image(yellowDagger,i*unitLength,j*unitLength,unitLength,unitLength)  
+            }   else if ((currentBoard[i][j] == 1 && currentPic == 2)){
+                fill("rgba(0,0,0,0)");
+                image(pistol,i*unitLength,j*unitLength,unitLength,unitLength)  
+            }   else {
+                fill("rgba(0,0,0,0)")
+            } 
+            stroke("rgba(0,0,0,0)");
+            // rect(i * unitLength, j * unitLength, unitLength, unitLength);
+            let c = i*unitLength;
+            let d = j*unitLength;
+            triangle(c,d,(c+unitLength),d,(c+(unitLength/2)),(d+unitLength))            
+        }
+}
+}
+
+/**
+ * When mouse is dragged
+ */
+ function mouseDragged() {
+    /**
+     * If the mouse coordinate is outside the board
+     */
+    if (mouseX > unitLength * columns || mouseY > unitLength * rows) {
+        return;
+    }
+    noLoop();
+    const x = Math.floor(mouseX / unitLength);
+    const y = Math.floor(mouseY / unitLength);
+    currentBoard[x][y] = 1;
+    if (currentPic == 0){
+        // fill(image(peanut,x*unitLength,y*unitLength,unitLength,unitLength));
+        fill("red")
+    } else if (currentPic ==1){
+        fill(image(yellowDagger,x*unitLength,y*unitLength,unitLength,unitLength));
+    } 
+    else if (currentPic ==2){
+        fill(image(pistol,x*unitLength,y*unitLength,unitLength,unitLength));
+    } 
+    stroke(strokeColor);
+    // rect(x * unitLength, y * unitLength, unitLength, unitLength);
+    let a = x * unitLength
+    let b = y * unitLength
+    triangle(a,b,(a+unitLength),b,(a+(unitLength/2)),(b+unitLength))            
+
+}
+
+/**
+ * When mouse is pressed
+ */
+function mousePressed() {
+    mouseDragged();
+}
+
+/**
+ * When mouse is released
+ */
+function mouseReleased() {
+    loop();
+}
+
+document.querySelector('.reset')
+	.addEventListener('click', function() {
+		init();
+	});
+
+function pauseFunction(){
+    if (currentStatus){
+    noLoop()
+    currentStatus = false;
+    } else{
+    loop()
+    currentStatus = true;
+    }
+}
+function resetLife(){
+    dieInput.value = dieValue = 2;
+    overInput.value = overValue = 3;
+    bornInput.value = bornInput = 3;
+}
+
+</script>
+</body>
+</html>
